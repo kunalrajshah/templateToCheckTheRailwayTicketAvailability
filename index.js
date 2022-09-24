@@ -6,7 +6,13 @@ const cors = require("cors");
 const app = express();
 const path = require("path");
 
-app.use(express.static(path.join(__dirname,'/clients/build')));
+//app.use(express.static(path.join(__dirname,'/clients/build')));
+if(process.env.NODE_ENV == "production"){
+    app.use(express.static("clients/build"));
+    app.get("*", (req, res)=>{
+        res.sendFile(path.join(__dirname,'clients','build','index.html'))
+    })
+}
 dotenv.config();
 app.use(express.json());
 app.use(cors());
@@ -19,9 +25,9 @@ mongoose.connect(process.env.MONGO_URI, (err) => {
     }
   });
 
-app.use((req,res,next)=>{
-    res.sendFile(path.join(__dirname,"clients","build","index.html"))
-})
+// app.use((req,res,next)=>{
+//     res.sendFile(path.join(__dirname,"clients","build","index.html"))
+// })
 
 app.post("/addTrain", (req,res)=>{
 
