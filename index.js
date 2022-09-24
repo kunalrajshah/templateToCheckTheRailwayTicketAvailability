@@ -19,8 +19,8 @@ mongoose.connect(process.env.MONGO_URI, (err) => {
     }
   });
 
-app.get("/", (req,res,next)=>{
-    res.sendFile(path.resolve(__dirname,"clients","build","index.html"))
+app.use((req,res,next)=>{
+    res.sendFile(path.join(__dirname,"clients","build","index.html"))
 })
 
 app.post("/addTrain", (req,res)=>{
